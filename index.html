@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Governance over Capacity, QSR 2026</title>
+<style>
+  :root{ --ink:#1a1a2e; --muted:#5b5b73; --brand:#14508c; --line:#e4e4ee; --bg:#ffffff; --panel:#faf9fe; --ok:#14784a; --warn:#aa5a0a; }
+  @media (prefers-color-scheme: dark){ :root{ --ink:#e8e8f2; --muted:#a6a6bd; --brand:#6fa8e0; --line:#2a2a3e; --bg:#12121c; --panel:#191926; } }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 Georgia,"Times New Roman",serif; }
+  .wrap{ max-width:820px; margin:0 auto; padding:40px 22px 80px; }
+  header{ border-bottom:2px solid var(--brand); padding-bottom:14px; margin-bottom:8px; }
+  .kicker{ font:600 12px/1.4 system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--brand); }
+  h1{ font-size:26px; line-height:1.25; margin:6px 0 4px; }
+  .byline{ color:var(--muted); font-size:14px; font-family:system-ui,sans-serif; }
+  .abstract{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:18px 0; font-size:15px; }
+  .abstract b{ color:var(--brand); }
+  h2{ font-size:19px; margin:26px 0 6px; padding-top:6px; }
+  h2 .n{ color:var(--brand); font-family:system-ui,sans-serif; font-size:15px; margin-right:6px; }
+  p{ margin:8px 0; }
+  .eq{ text-align:center; font-style:italic; margin:10px 0; color:var(--ink); }
+  .tablewrap{ overflow-x:auto; margin:16px 0; }
+  table{ border-collapse:collapse; width:100%; font-family:system-ui,sans-serif; font-size:13.5px; min-width:480px; }
+  caption{ text-align:left; font-family:system-ui,sans-serif; font-size:13px; color:var(--muted); margin-bottom:6px; }
+  th,td{ text-align:left; padding:7px 10px; border-bottom:1px solid var(--line); }
+  thead th{ border-bottom:2px solid var(--ink); }
+  .ok{ color:var(--ok); font-weight:600; } .warn{ color:var(--warn); font-weight:600; }
+  .refs{ font-family:system-ui,sans-serif; font-size:12.5px; color:var(--muted); }
+  .refs li{ margin:3px 0; }
+  .note{ font-family:system-ui,sans-serif; font-size:12px; color:var(--muted); border-top:1px solid var(--line); margin-top:30px; padding-top:12px; }
+  .prop{ border-left:3px solid var(--brand); background:var(--panel); padding:10px 14px; margin:14px 0; border-radius:0 8px 8px 0; font-size:14.5px; }
+  .algo{ border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin:14px 0; font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:13px; background:var(--panel); }
+  .algo-h{ font-weight:700; color:var(--brand); font-family:system-ui,sans-serif; margin-bottom:6px; }
+  .algo ol{ margin:0; padding-left:20px; } .algo li{ margin:2px 0; }
+  .cmt{ color:var(--muted); font-style:italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">INFORMS 2026 · QSR Best Student Paper Competition</div>
+  <h1>Governance over Capacity: Detecting and Correcting the Consensus Trap in Distributed Credence Services</h1>
+  <div class="byline">Carine Marette · Instructional Systems Technology, Indiana University</div>
+</header>
+
+<div class="abstract">
+  <b>Abstract.</b> We derive a closed-form validity ceiling for distributed evaluation under correlated
+  rater error: adding raters drives inter-rater reliability toward one while benchmark concordance stays
+  bounded below it. This yields the <b>Consensus Trap</b>, a process-monitoring diagnostic; on
+  1.98&nbsp;million evaluations, governance restores process capability where capacity cannot.
+  <div style="font-size:13px;color:var(--muted);margin-top:6px;font-family:system-ui,sans-serif">
+  <b>Keywords:</b> quality assurance; measurement validity; statistical process control; concordance;
+  distributed evaluation.</div>
+</div>
+
+<h2><span class="n">1.</span>Introduction</h2>
+<p>Distributed credence services (peer assessment, content moderation, clinical second-opinion panels,
+audit review) create value through many decentralized human judgments the recipient cannot verify even
+after consumption. The default quality strategy is <em>capacity expansion</em>: add evaluators to average
+out noise. This paper shows that capacity expansion fails under a measurable condition we call the
+<b>Consensus Trap</b>: high coordination reliability among evaluators masks low validity against an external
+benchmark, because evaluator errors are correlated rather than independent, so adding raters amplifies
+rather than cancels systematic error. We reframe the problem as one of quality-and-reliability assurance
+and show, on entire-population telemetry, that an agentic-AI governance capability restores statistical
+process capability more effectively than capacity expansion.</p>
+<p><b>Hypotheses.</b> We test five. (H1) Reliability can rise while validity falls, and under correlated
+error capacity expansion amplifies rather than corrects it. (H2) Governance improves operational
+performance more than capacity expansion. (H3) It does so by raising validity, not inter-evaluator
+reliability. (H4) The operations and marketing link is an association carried by engagement rather than by
+measured quality. (H5) Governance is a dynamic capability that improves over repeated cycles.</p>
+
+<h2><span class="n">2.</span>The Consensus Trap as a Quality-Assurance Failure Mode</h2>
+<p><b>Reliability is not validity.</b> Reliability (L1) is inter-rater agreement (ordinal Krippendorff's
+&alpha;). Validity (L2) is concordance between the peer-aggregated grade and the instructor benchmark,
+by Lin's concordance correlation coefficient, which penalizes both correlation loss and mean/scale offset.
+The Consensus Trap is the conjunction</p>
+<div class="eq">Trap &equiv; (L1 &ge; 0.80) &and; (L2 &lt; 0.20),</div>
+<p>confident, coordinated, and wrong; it emerges in <b>12.0%</b> of framed activities. A non-compensatory
+override caps the quality score and halts release when it fires, so a high L1 can never offset a low L2.</p>
+<p><b>A structural validity ceiling.</b> Under the classical correction for attenuation, observed validity
+is bounded by reliability. When a component of error is <em>shared</em>, reliability still approaches one
+but validity is bounded below by the systematic share, a structural limit, not a convergence delay. The
+median validity ceiling is <b>0.58</b>, with 60.4% of activities below 0.70; reaching adequate reliability
+by capacity alone would need a median of ~105 evaluators against a current median of 44.</p>
+
+<p><b>A closed-form result.</b> Let the peer mean estimate a submission's true score (variance
+&sigma;<sub>T</sub><sup>2</sup>) through raters whose errors share a component of correlation &rho; and
+variance &sigma;<sup>2</sup>, plus a fixed bias b. As raters are added, reliability &rarr; 1, yet the peer
+mean's concordance with the benchmark is bounded above by</p>
+<div class="eq">&rho;<sub>c</sub><sup>&#9733;</sup> = 2&sigma;<sub>T</sub><sup>2</sup> &divide;
+(2&sigma;<sub>T</sub><sup>2</sup> + &rho;&sigma;<sup>2</sup> + b<sup>2</sup>) &lt; 1
+&nbsp;&nbsp;(&rho; &gt; 0 or b &ne; 0).</div>
+<p>Capacity cannot touch the shared-error term &rho;&sigma;<sup>2</sup> or the squared bias
+b<sup>2</sup>, so for most activities benchmark accuracy is unreachable by adding raters. This turns the
+diagnostic into a monitoring statistic.</p>
+
+<h2><span class="n">3.</span>The Monitor, and Why Agreement Charts Fail</h2>
+<p>The Consensus-Trap monitor reads both reliability and validity, estimates the ceiling, and flags and
+halts a trapped activity. The conventional monitor, a control chart on inter-rater agreement, is by
+contrast <em>provably</em> blind to the trap.</p>
+
+<div class="algo">
+<div class="algo-h">Algorithm 1 &nbsp; Consensus-Trap Monitor</div>
+<ol>
+<li>Input: peer marks {x<sub>ij</sub>}, instructor anchor y<sub>i</sub>; thresholds &tau;<sub>R</sub>, &tau;<sub>V</sub></li>
+<li>L1 &larr; 1 &minus; mean range-ratio disagreement <span class="cmt">// reliability</span></li>
+<li>L2 &larr; normalized Lin's concordance of peer mean vs. anchor <span class="cmt">// validity</span></li>
+<li>estimate ceiling &rho;<sub>c</sub><sup>&#9733;</sup> from (L1, L2)</li>
+<li><b>if</b> L1 &ge; &tau;<sub>R</sub> <b>and</b> L2 &lt; &tau;<sub>V</sub> <b>then</b> flag Trap; cap the governance score; halt for human review</li>
+<li><b>else</b> release</li>
+</ol>
+</div>
+
+<div class="prop"><b>Proposition (Blindness of agreement monitoring).</b> Under correlated error
+(&rho;&nbsp;&gt;&nbsp;0), reliability &rarr; 1 for <em>every</em> value of the bias b, so any monitor that
+is a function of agreement alone assigns the trapped state the same limiting alarm probability as a
+healthy high-agreement state; its detection power cannot exceed its false-alarm rate (its ROC is the
+diagonal). Detecting the trap requires a benchmark-reading statistic, and by Neyman&ndash;Pearson the
+validity rule is the most powerful test of the trap under the model.</div>
+
+<p>We confirm the theorem on data. Among 3,954 activities, 380 (9.6%) are materially biased against the
+expert (|bias| &gt; 0.45). On the 190 <em>confident-but-wrong</em> activities (high agreement yet biased)
+the reliability chart detects <b>0%</b> by construction, while the validity monitor detects <b>80.5%</b>.</p>
+
+<div class="tablewrap">
+<table>
+  <caption><b>Table 2</b><br><i>Monitoring Benchmark: Detecting Materially Biased Activities</i></caption>
+  <thead><tr><th>Monitor</th><th>Recall</th><th>Precision</th><th>F<sub>1</sub></th></tr></thead>
+  <tbody>
+    <tr><td>Reliability control chart (standard)</td><td>0.50</td><td>0.15</td><td class="warn">0.23</td></tr>
+    <tr><td>Consensus-Trap monitor (L1 &and; L2)</td><td>0.40</td><td>0.29</td><td>0.34</td></tr>
+    <tr><td>Validity monitor (ours)</td><td class="ok">0.68</td><td class="ok">0.33</td><td class="ok">0.44</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:13px;color:var(--muted)"><i>Note.</i> Ground truth |bias| &gt; 0.45 vs. the expert
+(N = 3,954; 380 failures). The F<sub>1</sub> advantage is robust to the tolerance: 0.52 vs. 0.38 at 0.30,
+0.44 vs. 0.23 at 0.45, and 0.36 vs. 0.14 at 0.60.</p>
+
+<h2><span class="n">4.</span>Governance as Statistical Process Control</h2>
+<p>Treating absolute grading bias as a quality characteristic against a material-bias tolerance of 0.45,
+governance read as statistical process control raises the process-capability index of grading error and
+roughly halves its variance (0.116 to 0.054).</p>
+<div class="tablewrap">
+<table>
+  <caption><b>Table 1</b><br><i>Governance as Statistical Process Control</i></caption>
+  <thead><tr><th>Quantity</th><th>Governed</th><th>Ungoverned</th></tr></thead>
+  <tbody>
+    <tr><td>Variance of grading error</td><td class="ok">0.054</td><td class="warn">0.116</td></tr>
+    <tr><td>Process-capability index C<sub>pk</sub></td><td class="ok">higher</td><td class="warn">lower</td></tr>
+    <tr><td>Consensus-Trap incidence</td><td class="ok">reduced</td><td class="warn">baseline</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Within instructor (fixed effects absorbing all time-invariant heterogeneity), governance lowers grading
+bias with <b>&beta;<sub>CGS</sub> = &minus;0.187</b> (base engine; &minus;0.271 scale-invariant, p&lt;0.001),
+about three times the coefficient on raw evaluator volume; cascade depth is not an independent predictor
+once governance is included. The estimate is robust to unobserved
+confounding by the Oster criterion (&delta;* = 12.2). Governance, not labor, is the controlling lever.</p>
+
+<h2><span class="n">5.</span>Multi-Engine Measurement Validity</h2>
+<p>Peer marks are a per-criterion rubric value while the instructor anchor is a raw grade; comparing them
+directly collapses pooled concordance to 0.002. Normalizing each side within its own criterion before
+Lin's concordance restores validity to a median of <b>0.594</b>. Validity is skill-specific: peers track
+the instructor least on abstract skills (Creativity 0.46, Critical Thinking 0.50) and most on concrete
+ones (Communication and Professionalism 0.55, Problem-Based Learning 0.56).</p>
+<div class="tablewrap">
+<table>
+  <caption><b>Table 3</b><br><i>Four Measurement Engines (Normalized Lin's Concordance)</i></caption>
+  <thead><tr><th>Engine</th><th>Coverage</th><th>Validity</th></tr></thead>
+  <tbody>
+    <tr><td>V1 raw</td><td>100%</td><td class="warn">0.002 (scale artifact)</td></tr>
+    <tr><td>V2 normalized overall</td><td>100%</td><td class="ok">0.594 (median)</td></tr>
+    <tr><td>V3 per canonical skill</td><td>46.7%</td><td>0.46–0.56</td></tr>
+    <tr><td>V4 per rubric criterion</td><td>91.2%</td><td>0.594 (median)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2><span class="n">6.</span>The Operations and Marketing Link is an Engagement Phenomenon</h2>
+<p>Deep-governance adopters churn less, an activity-count-controlled Cox model returns a protective hazard
+ratio, but this is <em>not</em> a governance-quality effect. A confounding decomposition is decisive:
+unadjusted, higher validity predicts <em>higher</em> churn, and once we condition on engagement (log
+activity count), validity and the composite governance score have <em>no</em> retention association while
+engagement stays strongly protective. A time-varying specification removes any immortal-time artifact and
+leaves the estimate unchanged; an E-value of 5.93 and Oster's &delta;* = 12.2 bound residual confounding.
+We report H4 as an <em>engagement-linked association</em>, not a quality-to-retention mechanism.</p>
+<div class="tablewrap">
+<table>
+  <caption><b>Table 4</b><br><i>Retention Identification Battery</i></caption>
+  <thead><tr><th>Specification</th><th>Hazard ratio</th></tr></thead>
+  <tbody>
+    <tr><td>Deep adoption, activity-count-controlled</td><td>0.37</td></tr>
+    <tr><td>Time-varying depth (immortal-time-safe)</td><td>0.37</td></tr>
+    <tr><td>Validity | engagement (quality channel)</td><td>0.93 (n.s.)</td></tr>
+    <tr><td>Governance score | engagement</td><td>0.98 (n.s.)</td></tr>
+    <tr><td>Engagement (log activities)</td><td class="ok">0.35***</td></tr>
+    <tr><td>Validity, unadjusted</td><td class="warn">1.55*</td></tr>
+    <tr><td>Recurrent trap events (Andersen–Gill)</td><td>0.92</td></tr>
+  </tbody>
+</table>
+</div>
+<p>A latent-profile analysis of instructor governance layers (four profiles; N = 491) sharpens it: the
+<em>best-retained</em> profile has the <em>lowest</em> validity, while the <em>highest-validity</em>
+profile churns the most. Quality and retention <b>decouple</b>, which is the point: governance is a
+quality-and-reliability capability justified on its own terms, and a dynamic one, since cumulative prior
+governance lowers the hazard of an instructor's next Consensus-Trap event.</p>
+
+<h2><span class="n">7.</span>Conclusion</h2>
+<p>Distributed credence services possess a latent quality-and-reliability failure mode, the Consensus
+Trap, in which coordination reliability masks benchmark validity and capacity expansion is
+mathematically futile. An agentic-AI governance capability detects the trap with production-scale
+statistics and restores process capability where adding evaluators cannot. For quality managers, the
+result reframes "add inspectors" as futile whenever error is systematic and supplies a deployable
+alternative: monitor reliability and validity as separate control charts, fire the trap detector, and
+route a non-compensatory override to a human checkpoint. The same eight-layer stack and four engines drive
+the platform's live governance dashboard, making the diagnostic an operating instrument rather than a
+retrospective study.</p>
+<p><b>Managerial implications.</b> The results convert a governance intuition into a control procedure.
+Monitor reliability and validity on <em>separate</em> control charts; when the trap fires, do not add
+evaluators but apply the governance cascade (anchor to an expert exemplar, weight raters by demonstrated
+accuracy, route flagged cases to a human checkpoint); track the process capability of grading error and
+its variance as the operational key performance indicator, since capacity faces a structural ceiling that
+capability does not; and read validity per skill and per rubric criterion, coaching the low-validity
+skills the per-skill engine surfaces.</p>
+<p><b>Boundary conditions.</b> The mechanism applies wherever coordination reliability and benchmark
+validity can diverge and an external benchmark is intermittently observable; clinical second-opinion
+panels, content moderation, audit review, and professional certification share this structure. Where the
+benchmark is fully observable, governance reduces to ordinary quality control; where it is never
+observable, validity is unidentified and only reliability can be managed.</p>
+
+<h2 class="refs" style="color:var(--ink)">References</h2>
+<ol class="refs">
+  <li>Darby, M. R., &amp; Karni, E. (1973). Free competition and the optimal amount of fraud. <i>The Journal of Law and Economics, 16</i>(1), 67–88.</li>
+  <li>Dulleck, U., &amp; Kerschbamer, R. (2006). On doctors, mechanics, and computer specialists: The economics of credence goods. <i>Journal of Economic Literature, 44</i>(1), 5–42.</li>
+  <li>Hayes, R. H., &amp; Pisano, G. P. (1996). Manufacturing strategy: at the intersection of two paradigm shifts. <i>Production and Operations Management, 5</i>(1), 25–41.</li>
+  <li>Lorenz, J., Rauhut, H., Schweitzer, F., &amp; Helbing, D. (2011). How social influence can undermine the wisdom of crowd effect. <i>PNAS, 108</i>(22), 9020–9025.</li>
+  <li>Spearman, C. (1910). Correlation calculated from faulty data. <i>British Journal of Psychology, 3</i>(3), 271–295.</li>
+  <li>Hayes, A. F., &amp; Krippendorff, K. (2007). Answering the call for a standard reliability measure for coding data. <i>Communication Methods and Measures, 1</i>(1), 77–89.</li>
+  <li>Lawrence, I., &amp; Lin, K. (1989). A concordance correlation coefficient to evaluate reproducibility. <i>Biometrics</i>, 255–268.</li>
+  <li>Bland, J. M., &amp; Altman, D. G. (2010). Statistical methods for assessing agreement between two methods of clinical measurement. <i>International Journal of Nursing Studies, 47</i>(8), 931–936.</li>
+  <li>Messick, S. (1994). Validity of psychological assessment. <i>ETS Research Report Series, 1994</i>(2), i–28.</li>
+  <li>Lord, F. M., &amp; Novick, M. R. (2008). <i>Statistical theories of mental test scores.</i> IAP.</li>
+  <li>Oster, E. (2019). Unobservable selection and coefficient stability: Theory and evidence. <i>Journal of Business &amp; Economic Statistics, 37</i>(2), 187–204.</li>
+  <li>Crompton, H., et al. (2026). Governing generative AI in higher education: A global Delphi study on policy and practice. <i>International Journal of Educational Technology in Higher Education, 23</i>(1), 21.</li>
+  <li>Tai, J., Ajjawi, R., Boud, D., Dawson, P., &amp; Panadero, E. (2018). Developing evaluative judgement. <i>Higher Education, 76</i>(3), 467–481.</li>
+  <li>Carless, D., &amp; Boud, D. (2018). The development of student feedback literacy. <i>Assessment &amp; Evaluation in Higher Education, 43</i>(8), 1315–1325.</li>
+</ol>
+
+<div class="note">Companion webpage to the 6-page competition manuscript (PDF: unblinded and blinded versions in
+this folder). All figures reproduced from the live US+CA production databases. Prepared July 2026.</div>
+</div>
+</body>
+</html>
